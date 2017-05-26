@@ -1,0 +1,38 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: webphp
+  labels:
+    app: webphp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webphp
+  template:
+    metadata:
+      labels:
+        app: webphp
+    spec:
+      containers:
+        - image: webphp
+          name: webphp
+          env:
+          - name: webphp_DB_HOST
+            value: mysql:3306
+          - name: webphp_DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mysql
+                key: password
+          ports:
+            - containerPort: 80
+              name: webphp
+          volumeMounts:
+            - name: webphp-persistent-storage
+              mountPath: /var/www/html
+      volumes:
+        - name: webphp-persistent-storage
+          gcePersistentDisk:
+            pdName: webphp-disk
+            fsType: ext4
