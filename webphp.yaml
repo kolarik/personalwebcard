@@ -18,9 +18,9 @@ spec:
         - image: webphp
           name: webphp
           env:
-          - name: webphp_DB_HOST
+          - name: WEBPHP_DB_HOST
             value: mysql:3306
-          - name: webphp_DB_PASSWORD
+          - name: WEBPHP_DB_PASSWORD
             valueFrom:
               secretKeyRef:
                 name: mysql
